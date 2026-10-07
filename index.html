@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudentOS | Your college life, organized.</title>
+  <meta name="description" content="StudentOS is a complete, 100% frontend student utility app to manage tasks, assignments, exams, study schedules, CGPA, notes, and study resources.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">StudentOS</span>
+            <span class="brand-tagline">College Life Managed</span>
+          </div>
+        </div>
+        <button class="mobile-close-btn" id="sidebarCloseBtn" aria-label="Close Sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <button class="nav-item active" data-view="dashboard">
+              <span class="nav-icon">📊</span>
+              <span class="nav-label">Dashboard</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-view="tasks">
+              <span class="nav-icon">✅</span>
+              <span class="nav-label">Tasks</span>
+              <span class="badge nav-badge" id="navTaskBadge">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-view="assignments">
+              <span class="nav-icon">📚</span>
+              <span class="nav-label">Assignments</span>
+              <span class="badge nav-badge alert" id="navAssignmentBadge">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-view="exams">
+              <span class="nav-icon">⏱️</span>
+              <span class="nav-label">Exam Countdown</span>
+              <span class="badge nav-badge" id="navExamBadge">0</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-view="planner">
+              <span class="nav-icon">📅</span>
+              <span class="nav-label">Study Planner</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-view="cgpa">
+              <span class="nav-icon">🧮</span>
+              <span class="nav-label">CGPA Calculator</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-view="tools">
+              <span class="nav-icon">🛠️</span>
+              <span class="nav-label">Student Tools</span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-item" data-view="resources">
+              <span class="nav-icon">🔗</span>
+              <span class="nav-label">Resources</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sample-data-box">
+          <span>Need demo content?</span>
+          <button class="btn btn-xs btn-outline" id="loadDemoBtn">⚡ Load Sample Data</button>
+        </div>
+        <div class="app-version">
+          <span>StudentOS v1.0 • GitHub Pages Ready</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open Navigation Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="page-title-wrap">
+            <h1 id="pageTitle">Dashboard</h1>
+            <span class="today-date-badge" id="todayDateDisplay">October 7, 2026</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode" title="Toggle Dark/Light Mode">
+            <span class="theme-icon sun-icon">☀️</span>
+            <span class="theme-icon moon-icon">🌙</span>
+            <span class="theme-text">Dark Mode</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <main class="content-body" id="contentBody">
+        
+        <!-- SECTION 1: DASHBOARD -->
+        <section class="view-section active" id="view-dashboard">
+          <!-- Welcome Hero Banner -->
+          <div class="hero-banner">
+            <div class="hero-content">
+              <h2 id="greetingMessage">Welcome back, Student! 👋</h2>
+              <p class="hero-quote" id="quoteDisplay">"Education is the most powerful weapon which you can use to change the world."</p>
+              <div class="hero-actions">
+                <button class="btn btn-sm btn-light-glass" id="nextQuoteBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                  New Inspiration
+                </button>
+              </div>
+            </div>
+            <div class="hero-illustration">
+              <div class="hero-card-preview">
+                <span class="hero-chip">Academic Focus</span>
+                <span class="hero-stat-large" id="heroStudyHours">0.0 hrs</span>
+                <span class="hero-subtext">Planned for today</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Stats Cards -->
+          <div class="stats-grid">
+            <div class="stat-card" data-target="tasks">
+              <div class="stat-icon icon-tasks">✅</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statPendingTasks">0</span>
+                <span class="stat-label">Pending Tasks</span>
+              </div>
+              <div class="stat-sub" id="statCompletedTasks">0 completed</div>
+            </div>
+
+            <div class="stat-card" data-target="assignments">
+              <div class="stat-icon icon-assignments">📚</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statUpcomingAssignments">0</span>
+                <span class="stat-label">Pending Assignments</span>
+              </div>
+              <div class="stat-sub text-alert" id="statDueSoonAssignments">0 due soon</div>
+            </div>
+
+            <div class="stat-card" data-target="exams">
+              <div class="stat-icon icon-exams">⏱️</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statUpcomingExams">0</span>
+                <span class="stat-label">Upcoming Exams</span>
+              </div>
+              <div class="stat-sub" id="statNextExamTime">Next exam: None</div>
+            </div>
+
+            <div class="stat-card" data-target="planner">
+              <div class="stat-icon icon-study">📅</div>
+              <div class="stat-info">
+                <span class="stat-value" id="statTodayStudyHours">0h 0m</span>
+                <span class="stat-label">Today's Study</span>
+              </div>
+              <div class="stat-sub" id="statSessionCount">0 sessions planned</div>
+            </div>
+          </div>
+
+          <!-- Quick Actions Bar -->
+          <div class="quick-actions-bar">
+            <span class="quick-title">Quick Actions:</span>
+            <div class="action-buttons-wrap">
+              <button class="btn btn-sm btn-primary" onclick="openModal('taskModal')">+ Add Task</button>
+              <button class="btn btn-sm btn-secondary" onclick="openModal('assignmentModal')">+ Add Assignment</button>
+              <button class="btn btn-sm btn-accent" onclick="openModal('examModal')">+ Add Exam</button>
+              <button class="btn btn-sm btn-outline" onclick="switchView('tools')">⏱️ Pomodoro</button>
+              <button class="btn btn-sm btn-outline" onclick="switchView('planner')">+ Study Plan</button>
+            </div>
+          </div>
+
+          <!-- Dashboard Grid -->
+          <div class="dashboard-grid">
+            <!-- Left Column: Tasks & Assignments -->
+            <div class="dashboard-col">
+              <!-- Today's Tasks Widget -->
+              <div class="card widget-card">
+                <div class="card-header">
+                  <h3 class="card-title">Today's Tasks</h3>
+                  <button class="btn btn-link" onclick="switchView('tasks')">View All →</button>
+                </div>
+                <div class="card-body">
+                  <div class="dash-task-list" id="dashTaskList">
+                    <!-- Dynamic -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Urgent Assignments Widget -->
+              <div class="card widget-card">
+                <div class="card-header">
+                  <h3 class="card-title">Urgent & Upcoming Assignments</h3>
+                  <button class="btn btn-link" onclick="switchView('assignments')">View All →</button>
+                </div>
+                <div class="card-body">
+                  <div class="dash-assignment-list" id="dashAssignmentList">
+                    <!-- Dynamic -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Exams Countdown & Study Schedule -->
+            <div class="dashboard-col">
+              <!-- Nearest Exam Countdown Widget -->
+              <div class="card widget-card highlight-card">
+                <div class="card-header">
+                  <h3 class="card-title">Next Exam Countdown</h3>
+                  <button class="btn btn-link" onclick="switchView('exams')">All Exams →</button>
+                </div>
+                <div class="card-body">
+                  <div id="dashExamCountdownBox" class="dash-countdown-box">
+                    <!-- Dynamic -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Today's Study Timeline Widget -->
+              <div class="card widget-card">
+                <div class="card-header">
+                  <h3 class="card-title">Today's Study Schedule</h3>
+                  <button class="btn btn-link" onclick="switchView('planner')">Planner →</button>
+                </div>
+                <div class="card-body">
+                  <div class="dash-planner-list" id="dashPlannerList">
+                    <!-- Dynamic -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- SECTION 2: TASK MANAGER -->
+        <section class="view-section" id="view-tasks">
+          <div class="section-header">
+            <div>
+              <h2>Task Manager</h2>
+              <p class="section-subtitle">Organize and check off your everyday academic duties</p>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('taskModal')">+ Add New Task</button>
+          </div>
+
+          <!-- Controls & Filters -->
+          <div class="filter-bar card">
+            <div class="filter-group">
+              <label>Filter Status:</label>
+              <div class="pill-filters" id="taskStatusFilters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <input type="text" id="taskSearchInput" class="form-control" placeholder="Search tasks or subjects...">
+            </div>
+          </div>
+
+          <!-- Tasks List Container -->
+          <div class="tasks-container grid-list" id="tasksList">
+            <!-- Dynamic Task Cards -->
+          </div>
+        </section>
+
+
+        <!-- SECTION 3: ASSIGNMENT TRACKER -->
+        <section class="view-section" id="view-assignments">
+          <div class="section-header">
+            <div>
+              <h2>Assignment Tracker</h2>
+              <p class="section-subtitle">Keep track of course projects, lab reports, and homework deadlines</p>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('assignmentModal')">+ Add Assignment</button>
+          </div>
+
+          <!-- Filters -->
+          <div class="filter-bar card">
+            <div class="filter-group">
+              <label>Filter:</label>
+              <div class="pill-filters" id="assignmentFilters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="submitted">Submitted</button>
+                <button class="filter-btn" data-filter="duesoon">⚡ Due Soon</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Assignment Cards Container -->
+          <div class="assignments-container grid-cards" id="assignmentsList">
+            <!-- Dynamic Assignment Cards -->
+          </div>
+        </section>
+
+
+        <!-- SECTION 4: EXAM COUNTDOWN -->
+        <section class="view-section" id="view-exams">
+          <div class="section-header">
+            <div>
+              <h2>Exam Countdown</h2>
+              <p class="section-subtitle">Never miss a test or exam. Live countdowns sorted by nearest date.</p>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('examModal')">+ Add Exam</button>
+          </div>
+
+          <div class="exams-container grid-cards" id="examsList">
+            <!-- Dynamic Exam Cards -->
+          </div>
+        </section>
+
+
+        <!-- SECTION 5: STUDY PLANNER -->
+        <section class="view-section" id="view-planner">
+          <div class="section-header">
+            <div>
+              <h2>Daily Study Planner</h2>
+              <p class="section-subtitle">Schedule your daily revision slots and track planned study hours</p>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('plannerModal')">+ Add Study Session</button>
+          </div>
+
+          <!-- Planner Date & Hours Header -->
+          <div class="planner-summary-card card">
+            <div class="planner-summary-item">
+              <span class="summary-label">Target Date:</span>
+              <input type="date" id="plannerDateFilter" class="form-control date-picker-input">
+            </div>
+            <div class="planner-summary-item">
+              <span class="summary-label">Today's Planned Study:</span>
+              <span class="summary-value highlight-badge" id="plannedHoursDisplay">0.0 Hours</span>
+            </div>
+          </div>
+
+          <!-- Timeline Container -->
+          <div class="card timeline-card">
+            <div class="timeline" id="plannerTimeline">
+              <!-- Dynamic Study Session Items -->
+            </div>
+          </div>
+        </section>
+
+
+        <!-- SECTION 6: CGPA CALCULATOR -->
+        <section class="view-section" id="view-cgpa">
+          <div class="section-header">
+            <div>
+              <h2>CGPA & GPA Calculator</h2>
+              <p class="section-subtitle">Calculate grade points, semester GPA, and cumulative CGPA</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-outline" id="resetCgpaBtn">Reset All</button>
+              <button class="btn btn-primary" id="addCourseBtn">+ Add Subject</button>
+            </div>
+          </div>
+
+          <div class="cgpa-layout">
+            <!-- Courses Table Card -->
+            <div class="card cgpa-table-card">
+              <div class="card-header flex-between">
+                <h3>Course Grades & Credits</h3>
+                <div class="grading-scale-select">
+                  <label for="gradeScaleSelect">Grading System:</label>
+                  <select id="gradeScaleSelect" class="form-control form-control-sm">
+                    <option value="10">10-Point Scale (O=10, A+=9, A=8, B+=7...)</option>
+                    <option value="4">4.0 Scale (A=4, B=3, C=2, D=1, F=0)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="cgpa-table" id="cgpaTable">
+                  <thead>
+                    <tr>
+                      <th>Subject / Course Title</th>
+                      <th style="width: 120px;">Credits</th>
+                      <th style="width: 140px;">Grade</th>
+                      <th style="width: 120px;">Grade Points</th>
+                      <th style="width: 70px;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="cgpaTableBody">
+                    <!-- Dynamic Rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- CGPA Summary Card -->
+            <div class="card cgpa-summary-card">
+              <h3 class="card-title">Academic Standing</h3>
+              
+              <div class="cgpa-circle-display">
+                <div class="cgpa-val" id="cgpaResultValue">0.00</div>
+                <div class="cgpa-scale-text" id="cgpaScaleText">out of 10.0</div>
+              </div>
+
+              <div class="cgpa-metrics">
+                <div class="metric-box">
+                  <span class="metric-label">Total Credits</span>
+                  <span class="metric-val" id="cgpaTotalCredits">0</span>
+                </div>
+                <div class="metric-box">
+                  <span class="metric-label">Total Points</span>
+                  <span class="metric-val" id="cgpaTotalPoints">0</span>
+                </div>
+              </div>
+
+              <div class="cgpa-honors" id="cgpaHonorsBadge">
+                Status: Enter grades above
+              </div>
+
+              <div class="grade-legend">
+                <span class="legend-title">Grade Key:</span>
+                <p id="gradeLegendText">O: 10, A+: 9, A: 8, B+: 7, B: 6, C: 5, P: 4, F: 0</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- SECTION 7: USEFUL STUDENT TOOLS -->
+        <section class="view-section" id="view-tools">
+          <div class="section-header">
+            <div>
+              <h2>Useful Student Tools</h2>
+              <p class="section-subtitle">Boost your focus and quick math with embedded study helpers</p>
+            </div>
+          </div>
+
+          <!-- Tools Tabs -->
+          <div class="tools-tab-nav">
+            <button class="tool-tab-btn active" data-tool="pomodoro">⏱️ Pomodoro Timer</button>
+            <button class="tool-tab-btn" data-tool="wordcounter">📝 Word Counter</button>
+            <button class="tool-tab-btn" data-tool="calculator">🔢 Percentage Calculator</button>
+            <button class="tool-tab-btn" data-tool="notes">📌 Quick Notes</button>
+          </div>
+
+          <!-- Tool Panel 1: Pomodoro Timer -->
+          <div class="tool-panel active" id="tool-pomodoro">
+            <div class="card pomodoro-card">
+              <div class="pomodoro-header">
+                <div class="pomo-mode-selector">
+                  <button class="pomo-mode-btn active" data-mode="work">25m Study</button>
+                  <button class="pomo-mode-btn" data-mode="shortBreak">5m Short Break</button>
+                  <button class="pomo-mode-btn" data-mode="longBreak">15m Long Break</button>
+                </div>
+              </div>
+
+              <div class="pomo-timer-display">
+                <svg class="pomo-progress-ring" width="240" height="240">
+                  <circle class="pomo-ring-bg" cx="120" cy="120" r="100" />
+                  <circle class="pomo-ring-fill" id="pomoRingFill" cx="120" cy="120" r="100" />
+                </svg>
+                <div class="pomo-timer-text">
+                  <span class="pomo-time" id="pomoTimeDisplay">25:00</span>
+                  <span class="pomo-status-label" id="pomoStatusLabel">Time to focus!</span>
+                </div>
+              </div>
+
+              <div class="pomo-controls">
+                <button class="btn btn-lg btn-primary" id="pomoStartBtn">Start Focus</button>
+                <button class="btn btn-lg btn-secondary" id="pomoPauseBtn" disabled>Pause</button>
+                <button class="btn btn-lg btn-outline" id="pomoResetBtn">Reset</button>
+              </div>
+
+              <div class="pomo-stats">
+                <span>Completed Focus Sessions Today: <strong id="pomoSessionsCount">0</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool Panel 2: Word Counter -->
+          <div class="tool-panel" id="tool-wordcounter">
+            <div class="card wordcounter-card">
+              <div class="card-header flex-between">
+                <h3>Text & Word Counter</h3>
+                <button class="btn btn-xs btn-outline" id="clearTextBtn">Clear Text</button>
+              </div>
+              <div class="card-body">
+                <textarea id="wordCounterInput" class="form-control text-area-large" placeholder="Paste or type your essay, report, or notes here..."></textarea>
+                
+                <div class="word-stats-grid">
+                  <div class="word-stat-box">
+                    <span class="num" id="wcWords">0</span>
+                    <span class="lbl">Words</span>
+                  </div>
+                  <div class="word-stat-box">
+                    <span class="num" id="wcChars">0</span>
+                    <span class="lbl">Characters</span>
+                  </div>
+                  <div class="word-stat-box">
+                    <span class="num" id="wcCharsNoSpace">0</span>
+                    <span class="lbl">Chars (no spaces)</span>
+                  </div>
+                  <div class="word-stat-box">
+                    <span class="num" id="wcSentences">0</span>
+                    <span class="lbl">Sentences</span>
+                  </div>
+                  <div class="word-stat-box">
+                    <span class="num" id="wcReadingTime">0 min</span>
+                    <span class="lbl">Reading Time</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool Panel 3: Percentage Calculator -->
+          <div class="tool-panel" id="tool-calculator">
+            <div class="grid-cards two-col">
+              <!-- Marks % Card -->
+              <div class="card">
+                <h3>Marks Percentage Calculator</h3>
+                <p class="text-muted mb-3">Calculate exam scores & grade percentages</p>
+                <div class="form-group">
+                  <label>Marks Obtained:</label>
+                  <input type="number" id="calcMarksObtained" class="form-control" placeholder="e.g. 85">
+                </div>
+                <div class="form-group">
+                  <label>Maximum Marks:</label>
+                  <input type="number" id="calcMarksMax" class="form-control" placeholder="e.g. 100">
+                </div>
+                <div class="calc-result-box" id="calcMarksResult">
+                  Percentage: <strong>0.00%</strong>
+                </div>
+              </div>
+
+              <!-- Simple % of Value -->
+              <div class="card">
+                <h3>Percentage of a Number</h3>
+                <p class="text-muted mb-3">Calculate X% of Y</p>
+                <div class="form-group">
+                  <label>What is (Percentage %):</label>
+                  <input type="number" id="calcSimplePct" class="form-control" placeholder="e.g. 15">
+                </div>
+                <div class="form-group">
+                  <label>Of (Total Value):</label>
+                  <input type="number" id="calcSimpleTotal" class="form-control" placeholder="e.g. 200">
+                </div>
+                <div class="calc-result-box" id="calcSimpleResult">
+                  Result: <strong>0.00</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool Panel 4: Quick Notes -->
+          <div class="tool-panel" id="tool-notes">
+            <div class="section-header">
+              <div>
+                <h3>Quick Notes</h3>
+                <p class="text-muted">Sticky notes auto-saved to LocalStorage</p>
+              </div>
+              <button class="btn btn-primary" id="addNoteBtn">+ New Note</button>
+            </div>
+            <div class="notes-grid" id="notesContainer">
+              <!-- Dynamic Sticky Notes -->
+            </div>
+          </div>
+        </section>
+
+
+        <!-- SECTION 8: RESOURCES -->
+        <section class="view-section" id="view-resources">
+          <div class="section-header">
+            <div>
+              <h2>Study Resources & Links</h2>
+              <p class="section-subtitle">Save textbook links, drive folders, slide decks, and reference sites</p>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('resourceModal')">+ Save Resource</button>
+          </div>
+
+          <div class="resources-container grid-cards" id="resourcesList">
+            <!-- Dynamic Resource Cards -->
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+
+  <!-- MODALS -->
+
+  <!-- Modal 1: Add Task -->
+  <div class="modal-overlay" id="taskModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="taskModalTitle">Add New Task</h3>
+        <button class="modal-close-btn" onclick="closeModal('taskModal')">&times;</button>
+      </div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <div class="form-group">
+          <label for="taskTitle">Task Title *</label>
+          <input type="text" id="taskTitle" class="form-control" placeholder="e.g. Read Chapter 4 of Physics" required>
+        </div>
+        <div class="form-group">
+          <label for="taskSubject">Subject / Course *</label>
+          <input type="text" id="taskSubject" class="form-control" placeholder="e.g. Physics 101" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="taskPriority">Priority</label>
+            <select id="taskPriority" class="form-control">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div class="form-group col">
+            <label for="taskDueDate">Due Date *</label>
+            <input type="date" id="taskDueDate" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('taskModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Assignment -->
+  <div class="modal-overlay" id="assignmentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Assignment</h3>
+        <button class="modal-close-btn" onclick="closeModal('assignmentModal')">&times;</button>
+      </div>
+      <form id="assignmentForm">
+        <div class="form-group">
+          <label for="assignTitle">Assignment Title *</label>
+          <input type="text" id="assignTitle" class="form-control" placeholder="e.g. Machine Learning Lab Report 2" required>
+        </div>
+        <div class="form-group">
+          <label for="assignSubject">Subject *</label>
+          <input type="text" id="assignSubject" class="form-control" placeholder="e.g. Computer Science" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="assignDeadline">Deadline Date & Time *</label>
+            <input type="datetime-local" id="assignDeadline" class="form-control" required>
+          </div>
+          <div class="form-group col">
+            <label for="assignStatus">Initial Status</label>
+            <select id="assignStatus" class="form-control">
+              <option value="Pending">Pending</option>
+              <option value="Submitted">Submitted</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('assignmentModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Assignment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add Exam -->
+  <div class="modal-overlay" id="examModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Exam</h3>
+        <button class="modal-close-btn" onclick="closeModal('examModal')">&times;</button>
+      </div>
+      <form id="examForm">
+        <div class="form-group">
+          <label for="examSubject">Subject / Course Name *</label>
+          <input type="text" id="examSubject" class="form-control" placeholder="e.g. Data Structures & Algorithms" required>
+        </div>
+        <div class="form-group">
+          <label for="examTitle">Exam Type / Title</label>
+          <input type="text" id="examTitle" class="form-control" placeholder="e.g. Midterm Exam / Final Assessment">
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="examDate">Exam Date *</label>
+            <input type="date" id="examDate" class="form-control" required>
+          </div>
+          <div class="form-group col">
+            <label for="examTime">Exam Time *</label>
+            <input type="time" id="examTime" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('examModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Exam</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Add Study Session -->
+  <div class="modal-overlay" id="plannerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Study Plan Session</h3>
+        <button class="modal-close-btn" onclick="closeModal('plannerModal')">&times;</button>
+      </div>
+      <form id="plannerForm">
+        <div class="form-group">
+          <label for="planSubject">Subject *</label>
+          <input type="text" id="planSubject" class="form-control" placeholder="e.g. Organic Chemistry" required>
+        </div>
+        <div class="form-group">
+          <label for="planTopic">Topic / Goal *</label>
+          <input type="text" id="planTopic" class="form-control" placeholder="e.g. Practice Reaction Mechanisms & Ch 3" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="planStartTime">Start Time *</label>
+            <input type="time" id="planStartTime" class="form-control" required>
+          </div>
+          <div class="form-group col">
+            <label for="planEndTime">End Time *</label>
+            <input type="time" id="planEndTime" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('plannerModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Session</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Add Resource Link -->
+  <div class="modal-overlay" id="resourceModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Save Study Resource Link</h3>
+        <button class="modal-close-btn" onclick="closeModal('resourceModal')">&times;</button>
+      </div>
+      <form id="resourceForm">
+        <div class="form-group">
+          <label for="resName">Resource Name *</label>
+          <input type="text" id="resName" class="form-control" placeholder="e.g. MIT OpenCourseware Calculus Slides" required>
+        </div>
+        <div class="form-group">
+          <label for="resSubject">Subject *</label>
+          <input type="text" id="resSubject" class="form-control" placeholder="e.g. Mathematics" required>
+        </div>
+        <div class="form-group">
+          <label for="resUrl">Resource URL *</label>
+          <input type="url" id="resUrl" class="form-control" placeholder="https://..." required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeModal('resourceModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Link</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main Script -->
+  <script src="script.js"></script>
+</body>
+</html>
