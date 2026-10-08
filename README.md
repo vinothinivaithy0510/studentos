@@ -9,6 +9,15 @@ Built with pure vanilla web technologies (**HTML5, CSS3, JavaScript**), StudentO
 
 ## ✨ Features
 
+### 🔑 0. Authentication & Student Profile (`login.html`)
+- Dedicated, ultra-sleek **Login & Registration** portal with glassmorphic ambient design.
+- **Dual-Mode Forms**: Quick toggle between Sign In and Create Account.
+- **One-Click Demo Login**: Instant test login button (`Alex Vance`) for instant walkthroughs without typing.
+- **Password Visibility Toggle**: Show/hide password capability.
+- **Session Management**: Persistent user session stored securely in LocalStorage.
+- **Header Profile Pill**: Displays user avatar, name, and one-click Logout button on the main dashboard.
+- **Guest Access**: Option to continue to dashboard without logging in.
+
 ### 📊 1. Dashboard
 - Real-time date display and custom greeting (Morning, Afternoon, Evening).
 - Dynamic motivational quotes engine with one-click quote refresh.

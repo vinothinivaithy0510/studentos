@@ -17,7 +17,9 @@ const DB_KEYS = {
   NOTES: 'studentos_notes',
   RESOURCES: 'studentos_resources',
   THEME: 'studentos_theme',
-  POMO_SESSIONS: 'studentos_pomo_sessions'
+  POMO_SESSIONS: 'studentos_pomo_sessions',
+  USER: 'studentos_user',
+  USERS_LIST: 'studentos_users'
 };
 
 // Generic LocalStorage Loader
@@ -55,6 +57,7 @@ let pomoSessionsCount = getStorage(DB_KEYS.POMO_SESSIONS, 0);
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
+  initAuth();
   initDateDisplay();
   initQuotes();
   initNavigation();
@@ -85,6 +88,75 @@ function showToast(message, type = 'info') {
   }, 3000);
 }
 
+// User Authentication Header & Session Management
+function initAuth() {
+  const container = document.getElementById('authHeaderContainer');
+  const sidebarAuthLabel = document.getElementById('sidebarAuthLabel');
+  const sidebarAuthLink = document.getElementById('sidebarAuthLink');
+  
+  const currentUser = getStorage(DB_KEYS.USER, null);
+
+  if (currentUser && currentUser.isLoggedIn) {
+    const firstName = currentUser.name ? currentUser.name.split(' ')[0] : 'Student';
+    const initial = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'S';
+    
+    if (container) {
+      container.innerHTML = `
+        <div class="user-profile-badge">
+          <div class="user-avatar" title="${currentUser.name}">${initial}</div>
+          <div class="user-info-text">
+            <span class="user-name-display" title="${currentUser.name}">${currentUser.name}</span>
+            <span class="user-role-display">${currentUser.major || currentUser.university || 'Student'}</span>
+          </div>
+          <button class="btn-logout" onclick="logoutUser()" title="Log Out">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Logout</span>
+          </button>
+        </div>
+      `;
+    }
+
+    if (sidebarAuthLabel) {
+      sidebarAuthLabel.innerText = `Account (${firstName})`;
+    }
+  } else {
+    if (container) {
+      container.innerHTML = `
+        <a href="login.html" class="btn btn-sm btn-primary btn-auth-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          <span>Sign In</span>
+        </a>
+      `;
+    }
+
+    if (sidebarAuthLabel) {
+      sidebarAuthLabel.innerText = 'Sign In / Register';
+    }
+  }
+}
+
+function logoutUser() {
+  const currentUser = getStorage(DB_KEYS.USER, null);
+  if (currentUser) {
+    currentUser.isLoggedIn = false;
+    saveStorage(DB_KEYS.USER, currentUser);
+  } else {
+    localStorage.removeItem(DB_KEYS.USER);
+  }
+  showToast('Logged out successfully', 'info');
+  setTimeout(() => {
+    window.location.href = 'login.html';
+  }, 500);
+}
+
 // Format date nicely
 function initDateDisplay() {
   const now = new Date();
@@ -103,7 +175,13 @@ function initDateDisplay() {
   let greeting = 'Good evening';
   if (hrs < 12) greeting = 'Good morning';
   else if (hrs < 17) greeting = 'Good afternoon';
-  document.getElementById('greetingMessage').innerText = `${greeting}, Student! 👋`;
+  
+  const currentUser = getStorage(DB_KEYS.USER, null);
+  let userName = 'Student';
+  if (currentUser && currentUser.isLoggedIn && currentUser.name) {
+    userName = currentUser.name.split(' ')[0];
+  }
+  document.getElementById('greetingMessage').innerText = `${greeting}, ${userName}! 👋`;
 }
 
 // Theme handling
